@@ -8,6 +8,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import styles from './episode.module.scss'
+import { usePlayer } from '../../contexts/PlayerContext'
+import Head from 'next/head'
 
 type Episode = {
   id: string
@@ -26,14 +28,14 @@ type EpisodeProps = {
 }
 
 export default function Episode({ episode }: EpisodeProps) {
-  // const router = useRouter()
-
-  // if (router.isFallback) {
-  //   return <p>Carregando...</p>
-  // }
+  const { play } = usePlayer()
 
   return (
     <div className={styles.episode}>
+      <Head>
+        <title>{episode.title} | Podcastr</title>
+      </Head>
+
       <div className={styles.thumbnailContainer}>
         <Link href="/">
           <button type="button">
@@ -41,7 +43,7 @@ export default function Episode({ episode }: EpisodeProps) {
           </button>
         </Link>
         <Image width={700} height={160} src={episode.thumbnail} objectFit="cover" />
-        <button type="button">
+        <button type="button" onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio"/>
         </button>
       </div>
